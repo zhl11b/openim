@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"time"
+
+	"github.com/tidwall/gjson"
 )
 
 type ImUserInfo struct {
@@ -81,6 +83,9 @@ func SendAddUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 	}
 
 	log.Println("resData   " + string(resData))
+	if gjson.GetBytes(resData, "error_response.code").String() != "" {
+		return false, gjson.GetBytes(resData, "error_response.msg").String()
+	}
 	failMsg := resultResponse.Result.FailMsg
 	if len(failMsg.FailMsg) <= 0 {
 		return true, "add success"
