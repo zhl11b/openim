@@ -38,7 +38,7 @@ type UserDeleteResponse struct {
 func getCommonParams() map[string]string {
 
 	params := make(map[string]string)
-	params["app_key"] = AppKey
+	params["app_key"] = config.AppKey
 	params["format"] = "json"
 	params["sign_method"] = "md5"
 	params["timestamp"] = time.Now().Format("2006-01-02 15:04:05")

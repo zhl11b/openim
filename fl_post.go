@@ -5,18 +5,30 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
 )
 
-var UseHTTP bool
-var IsPro bool
+type ConfigST struct {
+	AppKey    string `json:"app_key"`
+	AppSecret string `json:"app_secret"`
+	IsPro     bool   `json:"is_pro"`
+	IsUseHTTP bool   `json:"is_use_http"`
+}
+
+var config ConfigST
+
+// Init 初始化
+func Init(cfg *ConfigST) {
+	config = *cfg
+}
 
 // 阿里接口请求方法
 func IMPost(m map[string]string) (success bool, resData []byte) {
-	if AppKey == "" || AppSecret == "" {
+	if config.AppKey == "" || config.AppSecret == "" {
 		return false, []byte("appkey or appsecret is requierd!")
 	}
 
@@ -24,12 +36,12 @@ func IMPost(m map[string]string) (success bool, resData []byte) {
 	client := &http.Client{}
 	var req *http.Request
 	var err error
-	if !UseHTTP {
-		fmt.Println("addr is " + GetHttpServerAddr(IsPro))
-		req, err = http.NewRequest("POST", GetHttpServerAddr(IsPro), body)
+	if !config.IsUseHTTP {
+		log.Println("addr is " + GetHttpServerAddr(config.IsPro))
+		req, err = http.NewRequest("POST", GetHttpServerAddr(config.IsPro), body)
 	} else {
-		fmt.Println("addr is " + GetHttpServerAddr(IsPro))
-		req, err = http.NewRequest("POST", GetHttpsServerAddr(IsPro), body)
+		log.Println("addr is " + GetHttpServerAddr(config.IsPro))
+		req, err = http.NewRequest("POST", GetHttpsServerAddr(config.IsPro), body)
 	}
 
 	if err != nil {
@@ -57,12 +69,12 @@ func getHttpBody(m map[string]string) (reader io.Reader, size int64) {
 
 	v := url.Values{}
 
-	siginString := AppSecret
+	siginString := config.AppSecret
 	for _, k := range keys {
 		v.Set(k, m[k])
 		siginString += k + m[k]
 	}
-	siginString += AppSecret
+	siginString += config.AppSecret
 	signByte := md5.Sum([]byte(siginString))
 	sign := strings.ToUpper(fmt.Sprintf("%x", signByte))
 	v.Set("sign", sign)
