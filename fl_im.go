@@ -2,7 +2,7 @@ package aliim
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -76,11 +76,11 @@ func SendAddUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 	var resultResponse Result
 	err = json.Unmarshal(resData, &resultResponse)
 	if err != nil {
-		//fmt.Println("err   " + err.Error())
+		//log.Println("err   " + err.Error())
 		return false, err.Error()
 	}
 
-	fmt.Println("resData   " + string(resData))
+	log.Println("resData   " + string(resData))
 	failMsg := resultResponse.Result.FailMsg
 	if len(failMsg.FailMsg) <= 0 {
 		return true, "add success"
@@ -97,7 +97,7 @@ func SendDeleteUsers(userids string) (success bool, response string) {
 	params["userids"] = userids
 
 	succ, resData := IMPost(params)
-	//fmt.Println("resData " + string(resData))
+	//log.Println("resData " + string(resData))
 	if succ == false {
 		return false, response
 	}
@@ -105,7 +105,7 @@ func SendDeleteUsers(userids string) (success bool, response string) {
 	type Result struct {
 		UserDeleteResponse UserDeleteResponse `json:"openim_users_delete_response"`
 	}
-	fmt.Println("resData   " + string(resData))
+	log.Println("resData   " + string(resData))
 	var resultResponse Result
 	err := json.Unmarshal(resData, &resultResponse)
 	if err != nil {
@@ -139,11 +139,11 @@ func SendUpdateUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 	type Result struct {
 		Result UserAddResponse `json:"openim_users_update_response"`
 	}
-	fmt.Println("resData   " + string(resData))
+	log.Println("resData   " + string(resData))
 	var resultResponse Result
 	err = json.Unmarshal(resData, &resultResponse)
 	if err != nil {
-		//fmt.Println("err   " + err.Error())
+		//log.Println("err   " + err.Error())
 		return false, err.Error()
 	}
 	failMsg := resultResponse.Result.FailMsg
