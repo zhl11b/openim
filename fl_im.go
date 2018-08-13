@@ -83,6 +83,8 @@ func SendAddUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 	}
 
 	log.Println("resData   " + string(resData))
+	// {"error_response":{"code":29,"msg":"Invalid app Key","sub_code":"isv.appkey-not-exists","request_id":"fwx2977sp1lq"}}
+	// {"openim_users_add_response":{"fail_msg":{},"uid_fail":{},"uid_succ":{"string":["5b714d8cc0b6fa682e552300"]}}}
 	if gjson.GetBytes(resData, "error_response.code").String() != "" {
 		return false, gjson.GetBytes(resData, "error_response.msg").String()
 	}
