@@ -182,6 +182,7 @@ func SendCustmsgPush(msg *ImMsg) (success bool, response string) {
 }
 
 type ImMsg struct {
+	FromUser   string   `json:"from_user"`
 	ToUsers    []string `json:"to_users"`
 	MsgType    int32    `json:"msg_type"`
 	Context    string   `json:"context"`
