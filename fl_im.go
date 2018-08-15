@@ -122,7 +122,6 @@ func SendDeleteUsers(userids string) (success bool, response string) {
 }
 
 func SendUpdateUsers(imUserInfos []ImUserInfo) (success bool, response string) {
-
 	for _, user := range imUserInfos {
 		if user.Userid == "" {
 			return false, "userid is required"
@@ -158,5 +157,49 @@ func SendUpdateUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 		return true, "update success"
 	}
 	return false, failMsg.FailMsg[0]
+}
 
+type CustMsg struct {
+	FromUser string   `json:"from_user"`
+	ToUsers  []string `json:"to_users"`
+	Summary  string   `json:"summary"`
+	Data     string   `json:"data"`
+	Aps      string   `json:"aps"`
+}
+
+func SendCustmsgPush(msg *ImMsg) (success bool, response string) {
+	params := getCommonParams()
+	params["method"] = OpenImCustmsgPush
+
+	result, err := json.Marshal(*msg)
+	if err != nil {
+		return false, err.Error()
+	}
+	params["custmsg"] = string(result)
+
+	succ, resData := IMPost(params)
+	return succ, string(resData)
+}
+
+type ImMsg struct {
+	FromUser   string   `json:"from_user"`
+	ToUsers    []string `json:"to_users"`
+	MsgType    int32    `json:"msg_type"`
+	Context    string   `json:"context"`
+	MediaAttr  string   `json:"media_attr"`
+	FromTaobao int32    `json:"from_taobao"`
+}
+
+func SendImmsgPush(msg *ImMsg) (success bool, response string) {
+	params := getCommonParams()
+	params["method"] = OpenImImmsgPush
+
+	result, err := json.Marshal(*msg)
+	if err != nil {
+		return false, err.Error()
+	}
+	params["immsg"] = string(result)
+
+	succ, resData := IMPost(params)
+	return succ, string(resData)
 }

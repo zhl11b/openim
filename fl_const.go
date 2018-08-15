@@ -1,9 +1,12 @@
 package aliim
 
 const (
-	OpenImUserAdd    string = "taobao.openim.users.add"
-	OpenImUserUpdate string = "taobao.openim.users.update"
-	OpenImUserDelete string = "taobao.openim.users.delete"
+	OpenImUserAdd      string = "taobao.openim.users.add"
+	OpenImUserUpdate   string = "taobao.openim.users.update"
+	OpenImUserDelete   string = "taobao.openim.users.delete"
+	OpenImRelationsGet string = "taobao.openim.relations.get"
+	OpenImCustmsgPush  string = "taobao.openim.custmsg.push"
+	OpenImImmsgPush    string = "taobao.openim.immsg.push"
 )
 
 // 获取服务端http地址， isPro true:正式环境 false: 沙箱环境
