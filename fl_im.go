@@ -160,14 +160,17 @@ func SendUpdateUsers(imUserInfos []ImUserInfo) (success bool, response string) {
 }
 
 type CustMsg struct {
-	FromUser string   `json:"from_user"`
-	ToUsers  []string `json:"to_users"`
-	Summary  string   `json:"summary"`
-	Data     string   `json:"data"`
-	Aps      string   `json:"aps"`
+	FromUser  string   `json:"from_user"`
+	ToUsers   []string `json:"to_users"`
+	Summary   string   `json:"summary"`
+	Data      string   `json:"data"`
+	Aps       string   `json:"aps"` // {"alert":"ios apns push"}
+	ApnsParam string   `json:"apns_param"`
+	Invisible int32    `json:"invisible"`
+	FromNick  string   `json:"from_nick"`
 }
 
-func SendCustmsgPush(msg *ImMsg) (success bool, response string) {
+func SendCustmsgPush(msg *CustMsg) (success bool, response string) {
 	params := getCommonParams()
 	params["method"] = OpenImCustmsgPush
 
